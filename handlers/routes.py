@@ -86,7 +86,7 @@ async def subcribers_cmd(message: Message):
         text += f"ID: <code>{u_id}</code>"
     
     for username in subscribers_username:
-        text += f"-- @{username}"
+        text += f"-- @{username}\n"
     await message.answer(text, parse_mode='html')
     
 
