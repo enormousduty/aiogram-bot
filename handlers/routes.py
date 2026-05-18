@@ -42,6 +42,7 @@ async def get_users():
         return result
     
 subscribers = set()
+subscribers_username = set()
 
 
 async def notifier(bot: Bot):
@@ -56,17 +57,22 @@ async def notifier(bot: Bot):
 
 @router.message(Command('subscribe'))
 async def subscribe(message: Message):
-    user_id = message.from_user.username
-
+    user_id = message.from_user.id
+    username = message.from_user.username
     subscribers.add(user_id)
+    subscribers_username.add(username)
+
     await message.answer('You are subscribed now!🎉🎉🎉')
 
 
 @router.message(Command('unsubscribe'))
 async def unsubscribe(message: Message):
-    user_id = message.from_user.username
+    user_id = message.from_user.id
+    username = message.from_user.username
 
     subscribers.discard(user_id)
+    subscribers_username.discard(username)
+
     await message.answer('You unsubscribed :(')
 
 
@@ -77,8 +83,11 @@ async def subcribers_cmd(message: Message):
         return
     text = 'Subscribers:\n'
     for u_id in subscribers:
-        text += f"{u_id}\n"
-    await message.answer(text)
+        text += f"ID: <code>{u_id}</code>"
+    
+    for username in subscribers_username:
+        text += f"-- @{username}"
+    await message.answer(text, parse_mode='html')
     
 
 
