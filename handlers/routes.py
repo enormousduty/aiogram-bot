@@ -9,11 +9,15 @@ from aiogram.fsm.context import FSMContext
 import aiosqlite
 from aiogram import Bot
 import asyncio 
-
+from dotenv import load_dotenv
+from os import getenv
 
 router = Router()
 
 import aiohttp
+
+load_dotenv()
+ADMIN_ID = getenv("ADMIN_ID")
 
 DB_NAME = "users_info.sql"
 
@@ -78,8 +82,7 @@ async def unsubscribe(message: Message):
 
 @router.message(Command('subscribers'))
 async def subcribers_cmd(message: Message):
-    admin_id = 1273261277
-    if not message.from_user.id == 12:
+    if not message.from_user.id == ADMIN_ID:
         await message.answer('Command is unavailable.')
         return
     if not subscribers:
