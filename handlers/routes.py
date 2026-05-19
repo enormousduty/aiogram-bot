@@ -9,15 +9,11 @@ from aiogram.fsm.context import FSMContext
 import aiosqlite
 from aiogram import Bot
 import asyncio 
-from dotenv import load_dotenv
-from os import getenv
+
 
 router = Router()
 
 import aiohttp
-
-load_dotenv()
-ADMIN_ID = getenv("ADMIN_ID")
 
 DB_NAME = "users_info.sql"
 
@@ -52,9 +48,11 @@ subscribers_username = set()
 async def notifier(bot: Bot):
     while True:
         if subscribers:
+            time = 0
             for user_id in list(subscribers):
                 try:
-                    await bot.send_message(user_id, "Your standard message.")
+                    time += 5
+                    await bot.send_message(user_id, f"{time} seconds passed")
                 except Exception:
                     pass
         await asyncio.sleep(5)
@@ -82,7 +80,8 @@ async def unsubscribe(message: Message):
 
 @router.message(Command('subscribers'))
 async def subcribers_cmd(message: Message):
-    if not message.from_user.id == ADMIN_ID:
+    admin_id = 1273261277
+    if not message.from_user.id == admin_id:
         await message.answer('Command is unavailable.')
         return
     if not subscribers:
