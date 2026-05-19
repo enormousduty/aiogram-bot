@@ -78,6 +78,10 @@ async def unsubscribe(message: Message):
 
 @router.message(Command('subscribers'))
 async def subcribers_cmd(message: Message):
+    admin_id = 1273261277
+    if not message.from_user.id == 12:
+        await message.answer('Command is unavailable.')
+        return
     if not subscribers:
         await message.answer('Subscribers list is empty...')
         return
